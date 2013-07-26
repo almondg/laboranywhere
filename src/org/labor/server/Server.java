@@ -4,17 +4,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collections;
+
+import org.labor.pojos.Employee;
 
 public class Server implements Runnable {
 
+	private static final String RC_DEMO_EMPLOYEE = "RC-DEMO_EMPLOYEE";
 	private static final boolean shouldRun = true;
 	private final int PORT = 8484;
 	private ServerSocket serverForAndroidRequests;
+	private Employee demoEmployee;
 	
 	public Server() throws IOException {
 		serverForAndroidRequests = new ServerSocket(PORT);
+	    demoEmployee = new Employee(
+	    		"shaked", "shaked@gmail.com", "0547449102");
+
 		
 	}
 	
@@ -33,23 +42,57 @@ public class Server implements Runnable {
 		
 		System.out.println(requestLine);
 		
-		execRequest(requestLine);
+		String execResult = execRequest(requestLine);
+		switch (execResult) {
+		case RC_DEMO_EMPLOYEE:
+			sendMessagesToPhone(demoEmployee, socketForCurrentSession);
+			break;
+
+		default:
+			break;
+		}
 		reader.close();
 		inputStreamForCurrentSession.close();
 		socketForCurrentSession.close();
 		
 	}
+	
+	public void sendMessagesToPhone(
+			Employee employee, Socket currentSessionSocket) {
 
-	private void execRequest(String requestLine) {
+	    System.out.println("Send messages to phone called");
+
+	    ObjectOutputStream outputStream = null;
+
+	    try {
+	        outputStream = new ObjectOutputStream(
+	        		currentSessionSocket.getOutputStream());
+	        outputStream.flush();
+
+	        outputStream.writeObject(employee);
+	    } catch (Exception e) {
+	        System.out.println("unable to create the streams");
+	        e.printStackTrace();
+	    }
+
+		try {
+		    outputStream.close();
+	
+		} catch (Exception e) {
+		    System.out.println("unable to close the streams");
+		    e.printStackTrace();
+		}
+	}
+
+	private String execRequest(String requestLine) {
 		switch (requestLine) {
 		case "help":
 			System.out.println("Help requested");
-			
-			break;
+			return RC_DEMO_EMPLOYEE;
 
 		default:
 			System.err.println("Request: " + requestLine + " reached default handler.");
-			break;
+			return "";
 		}
 	}
 
