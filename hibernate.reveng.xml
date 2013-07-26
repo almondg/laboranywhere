@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-name="Employee" match-catalog="tempit"></table-filter>
+	<table-filter match-name="Employee_to_Job" match-catalog="tempit"></table-filter>
+	<table-filter match-name="Employer" match-catalog="tempit"></table-filter>
+	<table-filter match-name="Employer_to_Job" match-catalog="tempit"></table-filter>
+	<table-filter match-name="Job" match-catalog="tempit"></table-filter>
+</hibernate-reverse-engineering>

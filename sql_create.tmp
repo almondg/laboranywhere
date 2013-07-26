@@ -1,0 +1,1 @@
+create table JOB (INT AUTO_INCREMENT UNIQUE PRIMARY job_id, TIMESTAMP begin_time, TIMESTAMP end_time, VARCHAR description, VARCHAR perks, VARCHAR location, FLOAT fee, INT employer_id, SET employees
